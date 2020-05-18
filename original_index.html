@@ -1,55 +1,57 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="stylesheet" href="styles/reset.css">
   <title>Rock Paper Scissors</title>
   <meta charset="utf-8">
 </head>
 <body>
-  <button id="rock">Rock</button>
-  <button id="paper">Paper</button>
-  <button id="scissors">Scissors</button>
-  <div id="results"></div>
   <script>
     function computerPlay() {
       let randomNum = Math.floor(Math.random() * 3);
+      let selection; 
 
       switch (randomNum) {
         case 0:
-          return 'paper'
+          selection = 'Rock';
+          return selection;
+          break;
         case 1:
-          return 'rock'
+          selection = 'Paper';
+          return selection;
+          break;
         case 2:
-          return 'scissors'
+          selection = 'Scissors';
+          return selection;
+          break;
       }
     }
 
     function playRound(playerSelection, computerSelection) {
       if (playerSelection.toLowerCase() == 'rock') {
           switch (computerSelection) {
-            case 'rock':
+            case 'Rock':
               return 'Draw! Rock draws Rock';
-            case 'paper':
+            case 'Paper':
               return 'You Lose! Rock loses against Paper';
-            case 'scissors':
+            case 'Scissors':
               return 'You Win! Rock beats Scissors';
           }
       } else if (playerSelection.toLowerCase() == 'paper') {
           switch (computerSelection) {
-            case 'rock':
+            case 'Rock':
               return 'You Win! Paper beats Rock';
-            case 'paper':
+            case 'Paper':
               return 'Draw! Paper draws Paper';
-            case 'scissors':
+            case 'Scissors':
               return 'You Lose! Paper loses against Scissors';
           }
       } else if (playerSelection.toLowerCase() == 'scissors') {
           switch (computerSelection) {
-            case 'rock':
+            case 'Rock':
               return 'You Lose! Scissors loses against Rock';
-            case 'paper':
+            case 'Paper':
               return 'You Win! Scissors beats Paper';
-            case 'scissors':
+            case 'Scissors':
               return 'You Draw! Scissors draws Scissors';
           }
       }
@@ -58,6 +60,22 @@
     function game() {
       let playerWins = 0;
       let computerWins = 0;
+
+      for (let i = 0; i < 5; i++) {
+        let playerSelection = prompt('Enter your play: ');
+        let computerSelection = computerPlay();
+        let oneRound = playRound(playerSelection, computerSelection);
+        console.log(oneRound);
+
+        switch (true) {
+          case oneRound.indexOf('Win') != -1:
+            playerWins++;
+            break;
+          case oneRound.indexOf('Lose') != -1:
+            computerWins++;  
+            break;
+        } 
+      }
 
       let matchResult;
       if (playerWins > computerWins) { 
@@ -69,21 +87,6 @@
       }
       console.log(matchResult);
     }
-
-    const resultsDiv = document.querySelector('#results');
-    const buttons = document.querySelectorAll('button');
-    buttons.forEach((button) => {
-      button.addEventListener('click', (e) => {
-        let btnPara = document.createElement('p');
-
-        let computerSelection = computerPlay();
-        let playerSelection = button.id;
-        let roundResult = playRound(playerSelection, computerSelection)
-
-        btnPara.textContent = roundResult;
-        resultsDiv.appendChild(btnPara);
-      });
-    });
 
     game();
 
